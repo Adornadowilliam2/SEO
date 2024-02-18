@@ -164,6 +164,9 @@ button {
         height: 25px;
         font-size: 14px;
     }
+    iframe{
+      width: 400px;
+    }
 }
 
  /*====================================*/
