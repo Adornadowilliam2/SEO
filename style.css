@@ -203,7 +203,7 @@ button {
 
   iframe {
       /* Adjust iframe styles for vivo Y12 */
-      width: 100%;
+      width: 100px;
       height: 300px;
   }
 }
