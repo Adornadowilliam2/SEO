@@ -16,7 +16,6 @@
 
         .container{
             height: 100vh;
-            /* background-image: linear-gradient(to bottom, #edde9c, #ffffff); */
             background-image: url(media/ouch.jpg);
             background-size: contain;
             background-repeat: no-repeat;
@@ -50,6 +49,19 @@
         div img{
             width:300px;
             box-shadow: 5px 5px 5px darkblue;
+        }
+
+        /* Media queries for different screen sizes */
+        @media only screen and (max-width: 600px) {
+            .container {
+                background-size: cover;
+            }
+        }
+
+        @media only screen and (max-width: 400px) {
+            .container {
+                background-size: contain;
+            }
         }
     </style>
 </head>
@@ -87,6 +99,12 @@
         
         </div>
     </div>
-
 </body>
 </html>
+
+
+
+
+
+
+
