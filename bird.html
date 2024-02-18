@@ -7,6 +7,8 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      background-color: darkblue;
+      
     }
 
     #gameCanvas {
@@ -29,6 +31,7 @@
       top: 20px;
       right: 20px;
       font-size: 24px;
+      color: white;
     }
 
     #highestScore {
@@ -36,6 +39,7 @@
       top: 60px;
       right: 20px;
       font-size: 18px;
+      color: white;
     }
   </style>
 </head>
@@ -76,7 +80,7 @@
 
     function drawBird() {
   const birdImage = new Image();
-  birdImage.src = 'https://vignette.wikia.nocookie.net/angry-birds-roleplay/images/3/31/Red.png/revision/latest/scale-to-width-down/2000?cb=20140630183311';
+  birdImage.src = 'https://pngfre.com/wp-content/uploads/Airplane-4.png';
   ctx.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight);
 }
 
@@ -158,10 +162,32 @@
     }
 
     function showGameOver() {
-      ctx.fillStyle = 'red';
-      ctx.font = '48px Arial';
-      ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
-    }
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Create a new image element
+  var image = new Image();
+
+  // Set the source of the image to the "end.gif" file
+  image.src = 'end.jpg';
+
+  // When the image is loaded, draw it on the canvas
+  image.onload = function() {
+    var x = (canvas.width - image.width) / 2; // Calculate the x-coordinate
+    var y = (canvas.height - image.height) / 2; // Calculate the y-coordinate
+    ctx.drawImage(image, x, y);
+  };
+
+  // Draw the title "GAME OVER" at the top
+  ctx.fillStyle = 'red';
+  ctx.font = '48px Arial';
+  ctx.textAlign = 'center'; // Set the text alignment to center
+  ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - image.height / 2 - 150);
+}
+
+
+
+
 
     function updateScore() {
       const scoreElement = document.getElementById('score');
