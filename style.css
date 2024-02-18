@@ -52,6 +52,11 @@ input:hover{
     inset 10px 10px 15px rgba(0, 255, 255, 0.5);
 }
 
+input{
+  width: 700px;
+  height: 50px;
+}
+
 /*====================================*/
 /*====================================*/
 
@@ -66,10 +71,7 @@ input:hover{
     margin: 20px;
 }
 
-input{
-    width: 1000px;
-    height: 50px;
-}
+
 
 input[type="text"]{
     padding-left: 30px;
