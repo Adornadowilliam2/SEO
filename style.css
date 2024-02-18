@@ -166,9 +166,41 @@ button {
     }
 }
 
-/* .btn a button{
-  background-color: orangered;
-  color: white;
-  box-shadow: 0 0 20px black;
+ /*====================================*/
+  /*====================================*/
+
+
+     /* Media query for desktop screens */
+@media (min-width: 1024px) {
+  .container {
+      /* Adjust container styles for desktop screens */
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+
+  .logo {
+      /* Adjust logo styles for desktop screens */
+      text-align: center;
+  }
+
+  .search-input {
+      /* Adjust search input styles for desktop screens */
+      width: 300px;
+  }
+
+  .diamond-button {
+      /* Adjust button styles for desktop screens */
+      margin-right: 10px;
+  }
+
+  .btn {
+      /* Adjust button container styles for desktop screens */
+      text-align: center;
+  }
+
+  iframe {
+      /* Adjust iframe styles for desktop screens */
+      width: 100%;
+      height: 400px;
+  }
 }
-     */
