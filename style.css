@@ -170,40 +170,41 @@ button {
   /*====================================*/
 
 
-     /* Media query for desktop screens */
-@media (min-width: 1024px) {
+/* Media query for vivo Y12 */
+@media (max-width: 720px) {
   .container {
-      /* Adjust container styles for desktop screens */
-      max-width: 1200px;
-      margin: 0 auto;
+      /* Adjust container styles for vivo Y12 */
+      max-width: 100%;
+      margin: 0;
   }
 
   .logo {
-      /* Adjust logo styles for desktop screens */
-      text-align: center;
+      /* Adjust logo styles for vivo Y12 */
+      text-align: left;
   }
 
   .search-input {
-      /* Adjust search input styles for desktop screens */
-      width: 300px;
+      /* Adjust search input styles for vivo Y12 */
+      width: 100%;
   }
 
   .diamond-button {
-      /* Adjust button styles for desktop screens */
-      margin-right: 10px;
+      /* Adjust button styles for vivo Y12 */
+      margin-right: 0;
   }
 
   .btn {
-      /* Adjust button container styles for desktop screens */
-      text-align: center;
+      /* Adjust button container styles for vivo Y12 */
+      text-align: left;
   }
 
   iframe {
-      /* Adjust iframe styles for desktop screens */
+      /* Adjust iframe styles for vivo Y12 */
       width: 100%;
-      height: 400px;
+      height: 300px;
   }
 }
+
 
 .iframe-container {
   position: relative;
