@@ -187,9 +187,10 @@ button {
   }
 
   .search-input {
-      /* Adjust search input styles for vivo Y12 */
-      width: 90%;
-  }
+    /* Adjust search input styles for vivo Y12 */
+    width: 150px; /* Adjust the width value as desired */
+    box-sizing: border-box; /* Include padding and border in the total width */
+}
 
   .diamond-button {
       /* Adjust button styles for vivo Y12 */
