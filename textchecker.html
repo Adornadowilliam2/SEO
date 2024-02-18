@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text Checker</title>
+  <style>
+    body{
+      background: rgb(34,34,195);
+background: linear-gradient(0deg, rgba(34,34,195,1) 0%, rgba(45,231,253,1) 100%);
+background-position: center;
+background-size: 100% 100%;
+background-repeat: no-repeat;
+margin: 0;
+padding: 0;
+height: 95vh;
+    }
+    h1 {
+      text-align: center;
+    }
+    
+    textarea {
+      margin: 1px 10px;
+      width: 800px;
+      height: 200px;
+      display: block;
+      width: 98%;
+    }
+    
+    button {
+      display: block;
+      margin: 10px auto;
+    }
+    
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text Checker</h1>
+  <textarea id="text-input" placeholder="Enter your text here"></textarea>
+  <!--<button id="check-button">Check Grammar</button>-->
+  <div id="result"></div>
+  
+  <script>
+    // Function to check grammar
+    function checkGrammar() {
+      let text = document.getElementById("text-input").value;
+      
+      // Perform grammar checking logic here
+      // You can use libraries like Grammarly or LanguageTool for more advanced grammar checking
+      
+      // Example: Check if text contains any spelling errors
+      let hasErrors = false;
+      // Implement your grammar checking logic here
+      
+      // Display result
+      let resultDiv = document.getElementById("result");
+      if (hasErrors) {
+        resultDiv.innerText = "Text has grammar errors.";
+      } else {
+        resultDiv.innerText = "Text is grammatically correct.";
+      }
+    }
+    
+    // Attach event listener to check button
+    let checkButton = document.getElementById("check-button");
+    checkButton.addEventListener("click", checkGrammar);
+  </script>
+</body>
+</html>

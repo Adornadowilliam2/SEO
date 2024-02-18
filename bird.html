@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Group 3 Flappy Bird</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #gameCanvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px solid black;
+    }
+
+    #jumpButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    #score {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+    }
+
+    #highestScore {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <button id="jumpButton">Jump</button>
+  <div id="score">Score: 0</div>
+  <div id="highestScore">Highest Score: 0</div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Bird variables
+    let birdX = 50;
+    let birdY = canvas.height / 2;
+    let birdDY = 0;
+    const birdWidth = 50;
+    const birdHeight = 50;
+    const gravity = 0.5;
+    const jumpStrength = -10;
+
+    // Obstacle variables
+    const obstacleWidth = 80;
+    const obstacleHeight = canvas.height / 2;
+    let obstacleX = canvas.width;
+    let gapY = Math.random() * (canvas.height - obstacleHeight);
+    const gapHeight = 150;
+    const obstacleSpeed = 5;
+
+    // Game state
+    let gameOver = false;
+    let score = 0;
+    let highestScore = 0;
+
+    function drawBird() {
+  const birdImage = new Image();
+  birdImage.src = 'https://vignette.wikia.nocookie.net/angry-birds-roleplay/images/3/31/Red.png/revision/latest/scale-to-width-down/2000?cb=20140630183311';
+  ctx.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight);
+}
+
+
+
+    function updateBird() {
+      if (!gameOver) {
+        birdY += birdDY;
+        birdDY += gravity;
+      }
+    }
+
+    function drawObstacle() {
+      ctx.fillStyle = 'green';
+      ctx.fillRect(obstacleX, 0, obstacleWidth, gapY);
+      ctx.fillRect(obstacleX, gapY + gapHeight, obstacleWidth, canvas.height - gapY - gapHeight);
+    }
+
+    function updateObstacle() {
+      if (!gameOver) {
+        obstacleX -= obstacleSpeed;
+
+        if (obstacleX < -obstacleWidth) {
+          obstacleX = canvas.width;
+          gapY = Math.random() * (canvas.height - obstacleHeight);
+          score++;
+          if (score > highestScore) {
+            highestScore = score;
+          }
+        }
+      }
+    }
+
+    function checkCollision() {
+      if (
+        birdX < obstacleX + obstacleWidth &&
+        birdX + birdWidth > obstacleX &&
+        (birdY < gapY || birdY + birdHeight > gapY + gapHeight)
+      ) {
+        // Collision detected
+        gameOver = true;
+      }
+
+      if (birdY + birdHeight > canvas.height || birdY < 0) {
+        // Bird dropped below or above the canvas
+        gameOver = true;
+      }
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function handleJump() {
+      if (!gameOver) {
+        birdDY = jumpStrength;
+      }
+    }
+
+    function handleKeyPress(event) {
+      if (event.code === 'Space') {
+        handleJump();
+      }
+    }
+
+    function gameLoop() {
+      clearCanvas();
+      drawObstacle();
+      updateObstacle();
+      drawBird();
+      updateBird();
+      checkCollision();
+      if (!gameOver) {
+        requestAnimationFrame(gameLoop);
+      } else {
+        showGameOver();
+      }
+      updateScore();
+    }
+
+    function showGameOver() {
+      ctx.fillStyle = 'red';
+      ctx.font = '48px Arial';
+      ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+    }
+
+    function updateScore() {
+      const scoreElement = document.getElementById('score');
+      scoreElement.innerText = 'Score: ' + score;
+
+      const highestScoreElement = document.getElementById('highestScore');
+      highestScoreElement.innerText = 'Highest Score: ' + highestScore;
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    const jumpButton = document.getElementById('jumpButton');
+    jumpButton.addEventListener('click', handleJump);
+
+    gameLoop();
+  </script>
+</body>
+</html>
