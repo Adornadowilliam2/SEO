@@ -5,3 +5,4 @@
 
 ---
 <code> Please dont try to convert this </code>
+$${\color{red}Red}$$
