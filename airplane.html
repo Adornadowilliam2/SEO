@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Group 3 Flappy Bird</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: darkblue;
+    }
+
+    #gameCanvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px solid black;
+    }
+
+    #jumpButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      border-radius: 15px;
+      background-color: lightgreen;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      border: none;
+      font-size: 5em;
+      transition: all .5 ease-in-out;
+    }
+
+    #startButton:hover{
+      animation: colorchange infinite 0.3s ease;
+    }
+    @keyframes colorchange {
+  0% {
+    background-image: linear-gradient(to bottom, lightblue, cyan, royalblue);
+  }
+  50% {
+    background-image: linear-gradient(to bottom, cyan, lime, yellow);
+  }
+  100% {
+    background-image: linear-gradient(to bottom, yellow, orange, red);
+  }
+}
+
+    #startButton {
+      background: #3498db;
+      background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+      background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+      background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+      background-image: -o-linear-gradient(top, #3498db, #2980b9);
+      background-image: linear-gradient(to bottom, #3498db, #2980b9);
+      -webkit-border-radius: 28;
+      -moz-border-radius: 28;
+      border-radius: 28px;
+      font-family: Courier New;
+      color: #ffffff;
+      font-size: 23px;
+      padding: 10px 20px 10px 20px;
+      text-decoration: none;
+    }
+
+
+    #score {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: white;
+    }
+
+    #highestScore {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      font-size: 18px;
+      color: white;
+    }
+
+    #countdown{
+      color: white;
+      font-size: 2em;
+    }
+
+    .group{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      border: red 10px solid;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <button id="jumpButton">Jump</button>
+  <div id="score">Score: 0</div>
+  <div id="highestScore">Highest Score: 0</div>
+  <div class="group">
+    <button id="startButton">Start</button>
+    <div id="countdown">Game starts in: 3</div>
+  </div>
+  <script>
+// Get the canvas element
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Bird variables
+let birdX = 50;
+let birdY = canvas.height / 2;
+let birdDY = 0;
+const birdWidth = 50;
+const birdHeight = 50;
+const gravity = 0.5;
+const jumpStrength = -10;
+
+// Obstacle variables
+const obstacleWidth = 80;
+const obstacleHeight = canvas.height / 2;
+let obstacleX = canvas.width;
+let gapY = Math.random() * (canvas.height - obstacleHeight);
+const gapHeight = 150;
+const obstacleSpeed = 5;
+
+// Game state
+let gameOver = false;
+let score = 0;
+let highestScore = 0;
+let gameStarted = false;
+
+function drawBird() {
+  const birdImage = new Image();
+  birdImage.src = 'https://pngfre.com/wp-content/uploads/Airplane-4.png';
+  ctx.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight);
+}
+
+function updateBird() {
+  if (!gameOver) {
+    birdY += birdDY;
+    birdDY += gravity;
+  }
+}
+
+function drawObstacle() {
+  ctx.fillStyle = 'green';
+  ctx.fillRect(obstacleX, 0, obstacleWidth, gapY);
+  ctx.fillRect(obstacleX, gapY + gapHeight, obstacleWidth, canvas.height - gapY - gapHeight);
+}
+
+function updateObstacle() {
+  if (!gameOver) {
+    obstacleX -= obstacleSpeed;
+
+    if (obstacleX < -obstacleWidth) {
+      obstacleX = canvas.width;
+      gapY = Math.random() * (canvas.height - obstacleHeight);
+      score++;
+      if (score > highestScore) {
+        highestScore = score;
+      }
+    }
+  }
+}
+
+function checkCollision() {
+  if (
+    birdX < obstacleX + obstacleWidth &&
+    birdX + birdWidth > obstacleX &&
+    (birdY < gapY || birdY + birdHeight > gapY + gapHeight)
+  ) {
+    // Collision detected
+    gameOver = true;
+  }
+
+  if (birdY + birdHeight > canvas.height || birdY < 0) {
+    // Bird dropped below or above the canvas
+    gameOver = true;
+  }
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function handleJump() {
+  if (!gameOver) {
+    birdDY = jumpStrength;
+  }
+}
+
+const jumpButton = document.getElementById('jumpButton');
+jumpButton.addEventListener('click', handleJump);
+
+function handleKeyPress(event) {
+  if (event.code === 'Space') {
+    handleJump();
+  }
+}
+
+function gameLoop() {
+  clearCanvas();
+  drawObstacle();
+  updateObstacle();
+  drawBird();
+  updateBird();
+  checkCollision();
+  if (!gameOver) {
+    requestAnimationFrame(gameLoop);
+  } else {
+    showGameOver();
+  }
+  updateScore();
+}
+
+function showGameOver() {
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Create a new image element
+  var image = new Image();
+
+  // Set the source of the image to the "end.gif" file
+  image.src = 'end.jpg';
+
+  // When the image is loaded, draw it on the canvas
+  image.onload = function() {
+    var x = (canvas.width - image.width) / 2; // Calculate the x-coordinate
+    var y = (canvas.height - image.height) / 2; // Calculate the y-coordinate
+    ctx.drawImage(image, x, y);
+  };
+
+  // Draw the title "GAME OVER" at the top
+  ctx.fillStyle = 'red';
+  ctx.font = '48px Arial';
+  ctx.textAlign = 'center'; // Set the text alignment to center
+  ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - image.height / 2 - 150);
+}
+
+function updateScore() {
+  const scoreElement = document.getElementById('score');
+  scoreElement.innerText = 'Score: ' + score;
+
+  const highestScoreElement = document.getElementById('highestScore');
+  highestScoreElement.innerText = 'Highest Score: ' + highestScore;
+}
+
+document.addEventListener('keydown', handleKeyPress);
+
+let countdown = 3;
+
+function updateCountdown() {
+  const countdownElement = document.getElementById('countdown');
+  countdownElement.innerText = `Game starts in: ${countdown}`;
+  countdown--;
+
+  if (countdown >= 0) {
+    setTimeout(updateCountdown, 1000);
+  } else {
+    countdownElement.style.display = 'none';
+    // Start the game
+    startGame();
+  }
+}
+
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', function() {
+  startButton.style.display = 'none'; // Hide the start button
+  gameStarted = true; // Set gameStarted to true
+  updateCountdown(); // Start the countdown
+});
+
+function startGame() {
+  // Code to start the game...
+  gameLoop(); // Start the game loop
+}
+
+// Rest of the code...
+
+  </script>
+</body>
+</html>
