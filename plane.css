@@ -1,4 +1,4 @@
-html, .bg-game {
+ .bg-game {
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -87,6 +87,8 @@ html, .bg-game {
     height: 100vh;
     border: red 10px solid;
     position: absolute;
+    /* width: 800px; */
+    margin: auto; 
   }
 
   /* Calculator Content */
@@ -148,4 +150,97 @@ html, .bg-game {
     padding: 10px;
     margin-bottom: 20px;
     text-shadow: 0 0 10px gold;
+}
+
+/* Table Generator */
+/* =============== */
+
+.table {
+  border-collapse: collapse;
+}
+.table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+td input {
+  width: 25vh;
+}
+
+.div{
+  max-width: 500px;
+  display: block;
+  margin: auto;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px black;
+}
+
+.div h1{
+  text-align: center;
+}
+
+.div button{
+  margin: auto;
+  background-color: green;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 10px black;
+  color: white;
+  margin-top: 10px;
+}
+
+/* School tool css design */
+/* ====================== */
+
+
+.content{
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.container{
+  height: 100vh;
+  background-color: darkslategray;
+}
+
+.grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+gap: 10px;
+grid-auto-flow: dense;
+/* opacity: 0.1; */
+}
+
+/* h1{
+  color: #bc2e1e;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #edde9c;
+  box-shadow: 5px 5px 5px goldenrod;
+  text-shadow: 
+  0 1px 0px #378ab4,
+  1px 0 0px #5dabcd,
+  1px 2px 1px #378ab4,
+  2px 1px 1px #5dabcd,
+  2px 3px 2px #378ab4, 3px 2px 2px #5dabcd, 3px 4px 2px #378ab4, 4px 3px 3px #5dabcd, 4px 5px 3px #378ab4, 5px 4px 2px #5dabcd, 5px 6px 2px #378ab4, 6px 5px 2px #5dabcd, 6px 7px 1px #378ab4, 7px 6px 1px #5dabcd, 7px 8px 0px #378ab4, 8px 7px 0px #5dabcd;
+} */
+
+.grid img{
+  width:300px;
+  box-shadow: 5px 5px 5px darkblue;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 720px) {
+  .container {
+      background-size: cover;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .container {
+      background-size: contain;
+  }
 }

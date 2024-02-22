@@ -8,19 +8,19 @@
 /*====================================*/
 
 
-.container{
+.container-index{
     height: 100vh;
     background-color: black;
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
 
-h1 {
+.container-index h1 {
     color: #fff; /* White text color */
     text-shadow: 0 0 10px #f00; /* Red text-shadow */
   }
   
-  h1::after {
+  .container-index  h1::after {
     content: "AI";
     position: relative;
     display: inline-block;
@@ -39,20 +39,20 @@ h1 {
     }
   }
 
-input{
+  .container-index input{
     outline-color: cyan;
     transition: all 1s ease-in-out;
    
 }
 
-input:hover{
+.container-index input:hover{
     box-shadow: -10px -10px 15px rgba(0, 255, 255, 0.5), 
     10px 10px 15px rgba(0, 255, 255, 0.5), 
     inset -10px -10px 15px rgba(0, 255, 255, 0.5), 
     inset 10px 10px 15px rgba(0, 255, 255, 0.5);
 }
 
-input{
+.container-index input{
   width: 800px;
   height: 50px;
 }
@@ -67,17 +67,18 @@ input{
     flex-direction: column;
 }
 
-.container img{
+.container-index img{
     margin: 20px;
 }
 
 
 
-input[type="text"]{
+.container-index input[type="text"]{
     padding-left: 30px;
     color: black;
 }
-button {
+
+.container-index button {
     border: none;
     border-radius: 5px;
   }
@@ -161,12 +162,12 @@ button {
 /*=========Make it responsive=============*/
 
 @media only screen and (max-width: 600px) {
-    .search-input {
+  .container-index .search-input {
         width: 200px;
         height: 25px;
         font-size: 14px;
     }
-    iframe{
+    .container-index iframe{
       width: 400px;
     }
 }
@@ -177,7 +178,7 @@ button {
 
 /* Media query for vivo Y12 */
 @media (max-width: 720px) {
-  .container {
+  .container-index {
       /* Adjust container styles for vivo Y12 */
       max-width: 100%;
       margin: 0;
@@ -204,7 +205,7 @@ button {
       text-align: left;
   }
 
-  iframe {
+  .container-index iframe {
       /* Adjust iframe styles for vivo Y12 */
       width: 100px;
       height: 300px;

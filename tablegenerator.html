@@ -2,44 +2,7 @@
 <html>
 <head>
   <title>Table Generator</title>
-  <style>
-    table {
-      border-collapse: collapse;
-    }
-    table, th, td {
-      border: 1px solid black;
-      padding: 5px;
-    }
-    td input {
-      width: 25vh;
-    }
-
-    div{
-      max-width: 500px;
-      display: block;
-      margin: auto;
-      border: 1px solid red;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px black;
-    }
-
-    div h1{
-      text-align: center;
-    }
-
-    button{
-      margin: auto;
-      background-color: green;
-      border-radius: 5px;
-      border: none;
-      box-shadow: 0 0 10px black;
-      color: white;
-      margin-top: 10px;
-    }
-
-
-  </style>
+  <link rel="stylesheet" href="plane.css">
   <script>
     function generateTable() {
       var rows = parseInt(document.getElementById("rows").value);
@@ -72,7 +35,7 @@
   </script>
 </head>
 <body>
-  <div>
+  <div class="div">
     <h1>Table Generator</h1>
   <label for="rows">Number of Rows:</label>
   <input type="number" id="rows">
