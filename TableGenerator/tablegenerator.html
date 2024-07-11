@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Table Generator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="shortcut icon"
+      href="media/grammar-logo.png"
+      type="image/x-icon"
+    />
+    <script>
+      function generateTable() {
+        var rows = parseInt(document.getElementById("rows").value);
+        var columns = parseInt(document.getElementById("columns").value);
+        var color = document.getElementById("color").value;
+        var table = document.getElementById("table");
+
+        // Clear previous table
+        table.innerHTML = "";
+
+        // Set table background color
+        table.style.backgroundColor = color;
+
+        // Generate table rows and columns
+        for (var i = 0; i < rows; i++) {
+          var row = document.createElement("tr");
+
+          for (var j = 0; j < columns; j++) {
+            var cell = document.createElement("td");
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = "Row " + (i + 1) + " Column " + (j + 1);
+            cell.appendChild(input);
+            row.appendChild(cell);
+          }
+
+          table.appendChild(row);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="div">
+      <h1>Table Generator</h1>
+      <label for="rows">Number of Rows:</label>
+      <input type="number" id="rows" />
+      <br />
+      <label for="columns">Number of Columns:</label>
+      <input type="number" id="columns" />
+      <br />
+      <label for="color">Table Color:</label>
+      <input type="color" id="color" />
+      <br />
+      <button onclick="generateTable()">Generate Table</button>
+      <br />
+    </div>
+    <span>
+      <table id="table"></table>
+    </span>
+  </body>
+</html>
