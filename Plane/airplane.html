@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" href="media/plane.png" type="image/x-icon" />
+    <title>Flappy Bird</title>
+    <style>
+      .bg-game {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      #gameCanvas {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;
+      }
+
+      #jumpButton {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        border-radius: 25px;
+        background-color: rgb(30, 210, 165);
+        color: white;
+        font-family: "Courier New", Courier, monospace;
+        border: none;
+        box-shadow: 2px 2px 4px black;
+        font-size: 50px;
+        transition: all 0.5s ease-in-out;
+      }
+
+      #startButton:hover {
+        animation: colorchange infinite 0.3s ease;
+      }
+      @keyframes colorchange {
+        0% {
+          background-image: linear-gradient(
+            to bottom,
+            lightblue,
+            cyan,
+            royalblue
+          );
+        }
+        50% {
+          background-image: linear-gradient(to bottom, cyan, lime, yellow);
+        }
+        100% {
+          background-image: linear-gradient(to bottom, yellow, orange, red);
+        }
+      }
+
+      #startButton {
+        background: #3498db;
+        background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+        background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+        background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+        background-image: -o-linear-gradient(top, #3498db, #2980b9);
+        background-image: linear-gradient(to bottom, #3498db, #2980b9);
+        -webkit-border-radius: 28;
+        -moz-border-radius: 28;
+        border: none;
+        box-shadow: 2px 2px 4px black;
+        border-radius: 28px;
+        font-family: Courier New;
+        color: #ffffff;
+        font-size: 23px;
+        padding: 10px 20px 10px 20px;
+        text-decoration: none;
+        z-index: 999;
+      }
+
+      #score {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 34px;
+        font-family: "Mitr", sans-serif;
+      }
+
+      #highestScore {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        font-size: 18px;
+        font-family: "Mitr", sans-serif;
+      }
+
+      #countdown {
+        font-size: 5em;
+      }
+
+      .group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #bbd3e2;
+        margin: auto;
+        flex-direction: column-reverse;
+      }
+
+      .modal {
+        display: block; /* Initially show the modal */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: auto;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+        position: relative;
+      }
+
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: red;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-game">
+    <canvas id="gameCanvas"></canvas>
+    <button id="jumpButton">Jump</button>
+    <div id="score">Score: 0</div>
+    <div id="highestScore">Highest Score: 0</div>
+    <div class="group">
+      <button id="startButton">Start</button>
+      <div id="countdown">Game starts in: 3</div>
+    </div>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Instructions</h2>
+        <p>
+          "Tap or click to flap your wings and navigate through the gaps between
+          pipes, avoiding collisions."
+        </p>
+        <button id="startModalButton" style="display: none">Start Game</button>
+      </div>
+    </div>
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Bird variables
+      let birdX = 50;
+      let birdY = canvas.height / 2;
+      let birdDY = 0;
+      const birdWidth = 50;
+      const birdHeight = 50;
+      const gravity = 0.5;
+      const jumpStrength = -10;
+
+      // Obstacle variables
+      const obstacleWidth = 80;
+      const obstacleHeight = canvas.height / 2;
+      let obstacleX = canvas.width;
+      let gapY = Math.random() * (canvas.height - obstacleHeight);
+      const gapHeight = 150;
+      const obstacleSpeed = 5;
+
+      // Game state
+      let gameOver = false;
+      let score = 0;
+      let highestScore = localStorage.getItem("highestScore") || 0;
+      let gameStarted = false;
+
+      function drawBird() {
+        const birdImage = new Image();
+        birdImage.src = "https://pngfre.com/wp-content/uploads/Airplane-4.png";
+        ctx.drawImage(birdImage, birdX, birdY, birdWidth, birdHeight);
+      }
+
+      function updateBird() {
+        if (!gameOver) {
+          birdY += birdDY;
+          birdDY += gravity;
+        }
+      }
+
+      function drawObstacle() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(obstacleX, 0, obstacleWidth, gapY);
+        ctx.fillRect(
+          obstacleX,
+          gapY + gapHeight,
+          obstacleWidth,
+          canvas.height - gapY - gapHeight
+        );
+      }
+
+      function updateObstacle() {
+        if (!gameOver) {
+          obstacleX -= obstacleSpeed;
+
+          if (obstacleX < -obstacleWidth) {
+            obstacleX = canvas.width;
+            gapY = Math.random() * (canvas.height - obstacleHeight);
+            score++;
+            if (score > highestScore) {
+              highestScore = score;
+              localStorage.setItem("highestScore", highestScore);
+            }
+          }
+        }
+      }
+
+      function checkCollision() {
+        if (
+          birdX < obstacleX + obstacleWidth &&
+          birdX + birdWidth > obstacleX &&
+          (birdY < gapY || birdY + birdHeight > gapY + gapHeight)
+        ) {
+          // Collision detected
+          gameOver = true;
+        }
+
+        if (birdY + birdHeight > canvas.height || birdY < 0) {
+          // Bird dropped below or above the canvas
+          gameOver = true;
+        }
+      }
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function handleJump() {
+        if (!gameOver) {
+          birdDY = jumpStrength;
+        }
+      }
+
+      const jumpButton = document.getElementById("jumpButton");
+      jumpButton.addEventListener("click", handleJump);
+
+      function handleKeyPress(event) {
+        if (event.code == "Space") {
+          handleJump();
+        }
+      }
+
+      function gameLoop() {
+        clearCanvas();
+        drawObstacle();
+        updateObstacle();
+        drawBird();
+        updateBird();
+        checkCollision();
+        if (!gameOver) {
+          requestAnimationFrame(gameLoop);
+        } else {
+          showGameOver();
+        }
+        updateScore();
+      }
+
+      function showGameOver() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var image = new Image();
+
+        // Set the source of the image to the "end.gif" file
+        image.src = "end.jpg";
+
+        // When the image is loaded, draw it on the canvas
+        image.onload = function () {
+          var x = (canvas.width - image.width) / 2;
+          var y = (canvas.height - image.height) / 2;
+          ctx.drawImage(image, x, y);
+        };
+
+        ctx.fillStyle = "red";
+        ctx.font = "48px Arial";
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+          "GAME OVER",
+          canvas.width / 2,
+          canvas.height / 2 - image.height / 2 - 150
+        );
+      }
+
+      function updateScore() {
+        const scoreElement = document.getElementById("score");
+        scoreElement.innerText = "Score: " + score;
+
+        const highestScoreElement = document.getElementById("highestScore");
+        highestScoreElement.innerText = "Highest Score: " + highestScore;
+      }
+
+      document.addEventListener("keydown", handleKeyPress);
+
+      let countdown = 3;
+
+      function updateCountdown() {
+        const countdownElement = document.getElementById("countdown");
+        countdownElement.innerText = `Game starts in: ${countdown}`;
+        countdown--;
+
+        if (countdown >= 0) {
+          setTimeout(updateCountdown, 1000);
+        } else {
+          countdownElement.style.display = "none";
+          // Show the modal with instructions
+          modal.style.display = "block"; // Show the modal
+        }
+      }
+
+      const startButton = document.getElementById("startButton");
+      startButton.addEventListener("click", function () {
+        startButton.style.display = "none"; // Hide the start button
+        gameStarted = true; // Set gameStarted to true
+        updateCountdown(); // Start the countdown
+      });
+
+      // Get the modal
+      const modal = document.getElementById("modal");
+
+      // Get the <span> element that closes the modal
+      const closeBtn = modal.querySelector(".close");
+
+      // When the user clicks on <span> (x), close the modal
+      closeBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+      });
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.addEventListener("click", function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      // Start the game when modal Start Game button is clicked
+      const startModalButton = document.getElementById("startModalButton");
+      startModalButton.addEventListener("click", function () {
+        modal.style.display = "none"; // Hide the modal
+        startGame(); // Start the game
+      });
+
+      function startGame() {
+        // Code to start the game...
+        gameLoop(); // Start the game loop
+      }
+
+      // Load the highest score from localStorage on page load
+      window.addEventListener("load", function () {
+        const storedHighestScore = localStorage.getItem("highestScore");
+        if (storedHighestScore !== null) {
+          highestScore = parseInt(storedHighestScore);
+          updateScore(); // Update the highest score display
+        }
+      });
+    </script>
+  </body>
+</html>
