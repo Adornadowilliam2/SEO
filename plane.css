@@ -7,22 +7,21 @@
   margin: 0;
 }
 
-.container {
+body {
   height: 100vh;
   background-color: darkslategray;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 10px;
-  grid-auto-flow: dense;
-  /* opacity: 0.1; */
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .grid img {
   width: 300px;
   box-shadow: 5px 5px 5px red;
+  margin: 10px;
 }
 
 /* Media queries for different screen sizes */
