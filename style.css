@@ -208,3 +208,37 @@
     height: 300px;
   }
 }
+
+/* School tool css design */
+/* ====================== */
+
+.content {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.wrapper img {
+  width: 300px;
+  margin: 10px;
+  box-shadow: 5px 5px 0 #333;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 720px) {
+  .container {
+    background-size: cover;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .container {
+    background-size: contain;
+  }
+}
