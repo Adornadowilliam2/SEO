@@ -30,7 +30,7 @@ export default function MyCalendar() {
       <h1>Calendar</h1>
       <div>
         <div className="calendar">
-          <div className="left">
+          <div className="left" style={{ color: "white" }}>
             <p>
               {today.getDate() < 10 ? `0${today.getDate()}` : today.getDate()}
             </p>

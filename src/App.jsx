@@ -2,8 +2,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
 import MyCalendar from "./pages/MyCalendar";
 import NotFound from "./pages/NotFound";
 
@@ -22,11 +20,7 @@ function App() {
       element: <NotFound />,
     },
   ]);
-  return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Home() {
+  const [search, setSearch] = React.useState("");
+
   const onSearch = () => {
-    const value = document.querySelector("input").value;
-    window.open(`https://www.google.com/search?q=${value}`, "_blank");
+    window.open(`https://www.google.com/search?q=${search}`, "_blank");
   };
 
   const onListening = () => {
@@ -16,8 +18,8 @@ export default function Home() {
       recognition.continuous = true;
 
       recognition.onresult = (event) => {
-        const result = event.results[event.result.length - 1][0].transcript;
-        document.querySelector("input").value = result;
+        const result = event.results[event.results.length - 1][0].transcript;
+
         document.getElementById("btn_listen").disabled = false;
       };
 
@@ -27,7 +29,7 @@ export default function Home() {
 
       document.getElementById("btn_listen").disabled = true;
 
-      btn_listen.addEventListener("click", () => {
+      document.getElementById("btn_listen").addEventListener("click", () => {
         recognition.start();
       });
     } else {
@@ -35,16 +37,33 @@ export default function Home() {
     }
   };
 
+  const handleInputChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <div className="container-index">
-      <div className="logo">
+      <div className="logo" style={{ marginTop: "10px" }}>
         <h1>𝖂𝖎𝖑𝖑𝖎𝖆𝖒</h1>
-        <input type="text" placeholder="Seach..." />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={handleInputChange}
+        />
         <div>
           <button onClick={onSearch}>Search</button>
           <button onClick={onListening} id="btn_listen">
             Start Listening
           </button>
+          <Link
+            to="/calendar"
+            id="btn"
+            target="_blank"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            Calendar
+          </Link>
         </div>
       </div>
     </div>
