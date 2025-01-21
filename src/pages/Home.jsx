@@ -51,7 +51,13 @@ export default function Home() {
           value={search}
           onChange={handleInputChange}
         />
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            flexWrap: "wrap",
+          }}
+        >
           <button onClick={onSearch}>Search</button>
           <button onClick={onListening} id="btn_listen">
             Start Listening
